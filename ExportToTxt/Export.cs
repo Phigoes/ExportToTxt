@@ -9,9 +9,9 @@ namespace ExportToTxt
 {
 	public class Export
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
-			var extension = new string[] { "*.cs", "*.sql", "*.config", "*.html", "*.cshtml", "*.css", "*.js", "*.aspx", "*.xml", };
+			var extension = Extensions.GetExtensions();
 
 			CheckBox cb = new CheckBox("Select at least one of the following options", true, true, extension);
 			var cbResult = cb.Select();
