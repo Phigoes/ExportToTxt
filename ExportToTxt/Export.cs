@@ -68,23 +68,23 @@ namespace ExportToTxt
 				Console.WriteLine($"{totalCount} files was found." + Environment.NewLine);
 				Console.WriteLine($"Reading and sorting out {totalCount} files." + Environment.NewLine);
 
-				for (int i = 1; i < files.Length; i++)
+				for (int i = 0; i < files.Length; i++)
 				{
-					var name = Path.GetFileName(files[i-1]);
-					var contents = File.ReadAllText(files[i-1]);
+					var name = Path.GetFileName(files[i]);
+					var contents = File.ReadAllText(files[i]);
 					var line = Environment.NewLine + header + "Filename: " + name + Environment.NewLine + header + contents;
 
 					result.Add(line);
-					DrawTextProgressBar(i, totalCount);
+					new TextProgressBar(i, totalCount);
 				}
 
 				Console.WriteLine("Done." + Environment.NewLine);
 				Console.WriteLine("Start to saving" + Environment.NewLine);
 
-				for (int i = 1; i < files.Length; i++)
+				for (int i = 0; i < files.Length; i++)
 				{
-					singleStr += string.Join(Environment.NewLine, result[i - 1]);
-					DrawTextProgressBar(i, totalCount);
+					singleStr += string.Join(Environment.NewLine, result[i]);
+					new TextProgressBar(i, totalCount);
 				}
 
 				Console.WriteLine("Done." + Environment.NewLine);
@@ -107,39 +107,6 @@ namespace ExportToTxt
 			File.WriteAllText(output, fullResult.ToString(), Encoding.UTF8);
 
 			Console.WriteLine(Environment.NewLine + "Done.");
-		}
-
-		private static void DrawTextProgressBar(int progress, int total)
-		{
-			//draw empty progress bar
-			Console.CursorLeft = 0;
-			Console.Write("[");
-			Console.CursorLeft = 32;
-			Console.Write("]");
-			Console.CursorLeft = 1;
-			double oneChunk = 30.0 / total;
-
-			//draw filled part
-			var position = 0;
-			for (int i = 0; i < oneChunk * progress; i++)
-			{
-				Console.BackgroundColor = ConsoleColor.Gray;
-				Console.CursorLeft = position++;
-				Console.Write(" ");
-			}
-
-			//draw unfilled part
-			for (int i = 0; i <= 31; i++)
-			{
-				Console.BackgroundColor = ConsoleColor.Black;
-				Console.CursorLeft = position++;
-				Console.Write(" ");
-			}
-
-			//draw totals
-			Console.CursorLeft = 35;
-			Console.BackgroundColor = ConsoleColor.Black;
-			Console.Write($"{progress} of {total}    ");
 		}
 	}
 }
