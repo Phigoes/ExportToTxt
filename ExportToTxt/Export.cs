@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ExportToTxt
 {
@@ -17,8 +18,32 @@ namespace ExportToTxt
 
 			Console.Clear();
 
+			var rootPath = string.Empty;
+			var outputPath = string.Empty;
+
+			do
+			{
+				Console.WriteLine("Write the directory which the application will read:");
+				rootPath = Console.ReadLine();
+
+				if (!Directory.Exists(rootPath))
+					Console.WriteLine("This directory doesn't exist.");
+
+			} while (!Directory.Exists(rootPath));
+
+			Console.Write(Environment.NewLine);
+
+			do
+			{
+				Console.WriteLine("Write the directory which the application will put result:");
+				outputPath = Console.ReadLine();
+
+				if (!Directory.Exists(outputPath))
+					Console.WriteLine("This directory doesn't exist.");
+
+			} while (!Directory.Exists(outputPath));
+
 			var fullResult = new StringBuilder();
-			var rootPath = @""; // Directory to read
 			var header = "********************************************" + Environment.NewLine;
 
 			Console.WriteLine($"Export archives from {rootPath}" + Environment.NewLine);
@@ -69,7 +94,13 @@ namespace ExportToTxt
 				Console.WriteLine("--------------------------------------------------------------------------------" + Environment.NewLine);
 			}
 
-			var output = @""; // Directory to output result
+			var twoLastWords = Regex.Match(outputPath, @"(.{2})\s*$");
+			var output = string.Empty;
+
+			if (string.Equals(twoLastWords.Value, "s\\"))
+				output = outputPath + "output.txt";
+			else
+				output = outputPath + @"\output.txt";
 
 			Console.WriteLine($"Saving output result on {output}");
 
